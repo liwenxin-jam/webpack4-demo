@@ -12,7 +12,7 @@ const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 console.log(path.resolve(__dirname, 'dist'))
 
 module.exports = {
-  mode: 'development', // 模式 默认两种 production development
+  mode: 'production', // 模式 默认两种 production development
   entry: './src/index.js', // 入口
   output: {
     filename: 'bundle.js',
@@ -20,6 +20,14 @@ module.exports = {
     path: path.resolve(__dirname, 'dist'), // 路径必须是一个绝对路径
     // publicPath: 'https://xx.cn'  // 提供cdn域名给文件baseUrl加载，注意是所有引入文件都会添加，可以单独在module的rule加
   },
+  // 1) source-map源码映射，会单独生成一个sourcemap文件，出错了，会标识当前报错的列和行
+  // devtool: 'source-map', // 增加映射文件，方便调试源代码
+  // 2) eval-source-map 不会单独产生sourcemap文件，出错了，会标识当前报错的列和行
+  // devtool: 'eval-source-map', 
+  // 3) cheap-module-source-map 不会产生列，但是会生成sourcemap文件
+  // devtool: 'cheap-module-source-map', // 产生后可以保留起来
+  // 4) cheap-module-eval-source-map 不会生成map, 集成在打包的文件中，不会产生列
+  // devtool: 'cheap-module-eval-source-map', 
   // 优化项，当mode为development时，这里不会生效
   optimization: {
     minimizer: [
@@ -32,7 +40,7 @@ module.exports = {
     ]
   },
   // 数组 放着所有的webpack插件
-  plugins: [ 
+  plugins: [
     new HtmlWebpackPlugin({
       template: './src/index.html',
       filename: 'index.html',
@@ -54,10 +62,14 @@ module.exports = {
   },
   module: { // 模块
     // loader规则，loader的特点，希望单一，字符串只用一个loader，多个loader需要 []，loader的顺序默认是use从右向左执行，rules从下到上
-    rules: [{
+    rules: [
+      // html文件规则
+      {
         test: /\.html$/,
         use: 'html-withimg-loader'
-      }, {
+      }, 
+      // 图片文件规则
+      {
         test: /\.(png|jpg|gif)$/,
         // use: 'file-loader'
         // limit做一个限制，当我们的图片小于多少KB，用base64来转化，注意转base64原文件会大3分之1
@@ -66,8 +78,9 @@ module.exports = {
           loader: 'url-loader',
           options: {
             limit: 1,
-            outputPath: '/img/',  // 指定图片输出到哪个目录,默认是直接在dist根目录下./
-            publicPath: 'https://xx.cn' // 单独给图片加baseUrl，其它不加
+            // 注意开发模式需要同步，就是输出增加前缀，本地也应该是根目录下这个baseUrl
+            // outputPath: '/img/', // 指定图片输出到哪个目录,默认是直接在dist根目录下./ 
+            // publicPath: 'https://xx.cn' // 单独给图片加baseUrl，其它不加
           }
         }
       },
@@ -84,6 +97,7 @@ module.exports = {
       //     }
       //   }
       // }, 
+      // js文件规则
       {
         test: /\.js$/, // normal 普通的loader
         use: {
@@ -100,6 +114,7 @@ module.exports = {
         include: path.resolve(__dirname, 'src'), // 指定查找某个文件夹
         exclude: /node_modules/ // 排除某个文件夹
       },
+      // css文件规则
       // css-loader 接受@import这种语法，style-loader它是把css插到head的标签中
       // loader可以是一个对象，然后传参options，例如{loader: 'style-loader', options:{} }
       // { test: /\.css$/, use: ['style-loader', 'css-loader'] }
@@ -117,6 +132,7 @@ module.exports = {
           'postcss-loader' // 先处理postcss-loader，再处理css-loader，增加autoprefixer
         ]
       },
+      // less文件规则
       {
         // 可以处理less文件，需要less less-loader
         // 可以处理scss sass文件，需要node-sass sass-loader

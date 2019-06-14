@@ -47,3 +47,11 @@ document.body.appendChild(image);
 // 2) 在css引入 background('url')
 require('./index.css');
 // 3) <img src="" alt="" />
+
+class Log {
+  constructor() {
+    console.lo('出错了');
+  }
+}
+
+let log = new Log()
