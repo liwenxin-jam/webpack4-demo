@@ -17,7 +17,8 @@ module.exports = {
   output: {
     filename: 'bundle.js',
     // filename: 'bundle.[hash:8].js', // 打包后的文件名，指定8位哈希，默认20位
-    path: path.resolve(__dirname, 'dist') // 路径必须是一个绝对路径
+    path: path.resolve(__dirname, 'dist'), // 路径必须是一个绝对路径
+    // publicPath: 'https://xx.cn'  // 提供cdn域名给文件baseUrl加载，注意是所有引入文件都会添加，可以单独在module的rule加
   },
   // 优化项，当mode为development时，这里不会生效
   optimization: {
@@ -30,7 +31,8 @@ module.exports = {
       new OptimizeCssAssetsPlugin()
     ]
   },
-  plugins: [ // 数组 放着所有的webpack插件
+  // 数组 放着所有的webpack插件
+  plugins: [ 
     new HtmlWebpackPlugin({
       template: './src/index.html',
       filename: 'index.html',
@@ -58,12 +60,14 @@ module.exports = {
       }, {
         test: /\.(png|jpg|gif)$/,
         // use: 'file-loader'
-        // 做一个限制，当我们的图片小于多少KB，用base64来转化，注意转base64原文件会大3分之1
+        // limit做一个限制，当我们的图片小于多少KB，用base64来转化，注意转base64原文件会大3分之1
         // 否则用file-loader产出真实图片
         use: {
           loader: 'url-loader',
           options: {
-            limit: 1
+            limit: 1,
+            outputPath: '/img/',  // 指定图片输出到哪个目录,默认是直接在dist根目录下./
+            publicPath: 'https://xx.cn' // 单独给图片加baseUrl，其它不加
           }
         }
       },
