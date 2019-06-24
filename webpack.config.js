@@ -9,8 +9,15 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 // 用来压缩js的插件 
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
-console.log(path.resolve(__dirname, 'dist'))
+// 用来清除dist文件夹
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+// 复制文件夹
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
+// 推荐插件
+// 1) cleanWebpackPlugin
+// 2) copyWebpackPlugin
+// 3) bannerPlugin // 内置
 module.exports = {
   mode: 'production', // 模式 默认两种 production development
   entry: './src/index.js', // 入口
@@ -47,6 +54,13 @@ module.exports = {
   },
   // 数组 放着所有的webpack插件
   plugins: [
+    new CleanWebpackPlugin(),
+    new CopyWebpackPlugin([
+      { from: './doc', to: './doc' } // 默认直接在dist根目录下复制，可以通过to来相对dist创建文件夹存放
+    ]),
+    new MiniCssExtractPlugin({
+      filename: 'main.css'
+    }),
     new HtmlWebpackPlugin({
       template: './src/index.html',
       filename: 'index.html',
@@ -56,9 +70,7 @@ module.exports = {
       // },
       // hash: true  // 防止浏览器缓存，增加哈希后缀，类似时间戳效果 bundle.js?sdfgsdfgsdf
     }),
-    new MiniCssExtractPlugin({
-      filename: 'main.css'
-    }),
+    // new Webpack.BannerPlugin('made 2019 by jam'), // 打包出来的js css文件顶部增加banner描述 /*! made 2019 by jam */
     // new Webpack.ProvidePlugin({ // 在每个模块中都注入$
     //   $: 'jquery'
     // })
@@ -73,7 +85,7 @@ module.exports = {
       {
         test: /\.html$/,
         use: 'html-withimg-loader'
-      }, 
+      },
       // 图片文件规则
       {
         test: /\.(png|jpg|gif)$/,
