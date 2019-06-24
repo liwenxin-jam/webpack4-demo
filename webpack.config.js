@@ -14,6 +14,12 @@ console.log(path.resolve(__dirname, 'dist'))
 module.exports = {
   mode: 'production', // 模式 默认两种 production development
   entry: './src/index.js', // 入口
+  // watch: true, // 是否开启打包dist文件夹实时监听
+  // watchOptions: { // 监控的选项
+  //   poll: 1000, // 每秒监听一千次文件夹
+  //   aggregateTimeout: 500,  // 防抖，用户一直输入, 500毫秒只打包一次
+  //   ignored: /node_modules/ // 不监听node_modules
+  // },
   output: {
     filename: 'bundle.js',
     // filename: 'bundle.[hash:8].js', // 打包后的文件名，指定8位哈希，默认20位

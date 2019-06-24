@@ -50,7 +50,7 @@ require('./index.css');
 
 class Log {
   constructor() {
-    console.lo('出错了');
+    console.log('出错了');
   }
 }
 
