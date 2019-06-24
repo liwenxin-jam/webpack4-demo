@@ -172,10 +172,28 @@ module.exports = {
     ]
   },
   devServer: { // 开发服务器的配置
-    port: 3000,
+    port: 8090,
     progress: true, // 查看打包进度
     contentBase: './dist', // 非 webpack 的内容的服务路径是
     open: true, // 默认打开浏览器
-    compress: true // 是否压缩
+    compress: true, // 是否开启Gzip压缩
+    // 1) 配置代理
+    // proxy: { // 重写的方式，把请求代理到express服务器上
+    //   '/api': {
+    //     target: 'http://localhost:3000',
+    //     // changeOrigin: true,
+    //     pathRewrite: {
+    //       '^/api': ''
+    //     }
+    //   }
+    // }
+    // 2) 前端只想单纯模拟数据
+    // before(app) {
+    //   app.get('/user', (req, res) => {
+    //     res.json({ name: 'xxlai-jam-before' });
+    //   })
+    // }
+    // 3) 有服务端 不用用代理来处理 服务端用webpack 端口用服务端端口
+    // 借助中间件webpack-dev-middleware实件，参考server.js，在服务端通过读取webpack.config一起渲染前端文件
   }
 }

@@ -39,19 +39,30 @@
 // 1) 在js中创建图片来引入
 // file-loader 默认会在内部生成一张图片 到build目录下
 // 
-import logo from './logo.png'; // 把图片引入，返回的结果是一个新的图片地址
-let image = new Image();
-// image.src = './logo.png'; // 打包的时候认为这就是一个普通的字符串
-image.src = logo;
-document.body.appendChild(image);
-// 2) 在css引入 background('url')
-require('./index.css');
-// 3) <img src="" alt="" />
+// import logo from './logo.png'; // 把图片引入，返回的结果是一个新的图片地址
+// let image = new Image();
+// // image.src = './logo.png'; // 打包的时候认为这就是一个普通的字符串
+// image.src = logo;
+// document.body.appendChild(image);
+// // 2) 在css引入 background('url')
+// require('./index.css');
+// // 3) <img src="" alt="" />
 
-class Log {
-  constructor() {
-    console.log('出错了');
-  }
+// class Log {
+//   constructor() {
+//     console.log('出错了');
+//   }
+// }
+
+// let log = new Log()
+
+// 默认访问当前端口号，localhost:8080, webpack-dev-server －> 3000
+// http-proxy
+let xhr = new XMLHttpRequest();
+xhr.open('GET', '/user', true); // ture是否是异步请求
+
+xhr.onload = function() {
+  console.log(xhr.response);
 }
 
-let log = new Log()
+xhr.send();
