@@ -25,9 +25,18 @@ module.exports = {
     }]
   },
   plugins: [
+    new Webpack.DllReferencePlugin({
+      manifest: path.resolve(__dirname, 'dist', 'manifest.json')
+    }),
     new Webpack.IgnorePlugin(/\.\/locale/, /moment/), // 引入moment忽略加载locale文件
     new HtmlWebpackPlugin({
       template: './public/index.html'
     })
-  ]
+  ],
+  devServer: { // 开发服务器的配置
+    port: 8090,
+    progress: true, // 查看打包进度
+    contentBase: './dist', // 非 webpack 的内容的服务路径是
+    open: true // 默认打开浏览器
+  }
 }
