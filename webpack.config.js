@@ -1,4 +1,5 @@
 const path = require('path');
+const Webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
@@ -10,7 +11,7 @@ module.exports = {
   },
   module: {
     // noParse: (content) => /jquery|lodash/.test(content), // 不去解析jquery中的依赖，相对提高打包速度
-    noParse: /jquery|lodash/,  // 等价于前者
+    noParse: /jquery|lodash/, // 等价于前者
     rules: [{
       test: /\.js$/, // normal 普通的loader
       use: {
@@ -18,10 +19,13 @@ module.exports = {
         options: {
           presets: ['@babel/preset-env', '@babel/preset-react'],
         }
-      }
+      },
+      include: path.resolve(__dirname, 'src'), // 指定查找某个文件夹
+      exclude: /node_modules/ // 排除某个文件夹
     }]
   },
   plugins: [
+    new Webpack.IgnorePlugin(/\.\/locale/, /moment/), // 引入moment忽略加载locale文件
     new HtmlWebpackPlugin({
       template: './public/index.html'
     })
