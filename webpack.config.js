@@ -9,7 +9,8 @@ module.exports = {
     path: path.resolve(__dirname, 'dist')
   },
   module: {
-    noParse: /jquery|lodash/, // 不去解析jquery中的依赖，相对提高打包速度
+    // noParse: (content) => /jquery|lodash/.test(content), // 不去解析jquery中的依赖，相对提高打包速度
+    noParse: /jquery|lodash/,  // 等价于前者
     rules: [{
       test: /\.js$/, // normal 普通的loader
       use: {
