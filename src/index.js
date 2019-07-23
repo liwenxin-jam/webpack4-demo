@@ -58,11 +58,17 @@
 
 // 默认访问当前端口号，localhost:8080, webpack-dev-server －> 3000
 // http-proxy
-let xhr = new XMLHttpRequest();
-xhr.open('GET', '/user', true); // ture是否是异步请求
+// let xhr = new XMLHttpRequest();
+// xhr.open('GET', '/user', true); // ture是否是异步请求
 
-xhr.onload = function() {
-  console.log(xhr.response);
-}
+// xhr.onload = function() {
+//   console.log(xhr.response);
+// }
 
-xhr.send();
+// xhr.send();
+
+// import 'bootstrap' // 引的是js，需要依赖相关项popper.js jquery.js 除非指定查找入口文件
+// import 'bootstrap/dist/css/bootstrap.css'; // 指定只引入css文件
+// import '@bootstrap'; // 引入别名
+
+import './style' // 默认查找的是.js文件

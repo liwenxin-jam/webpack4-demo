@@ -171,6 +171,14 @@ module.exports = {
       }
     ]
   },
+  resolve: { // 解析 第三方包 common
+    modules: [path.resolve('node_modules')], // 指定查找模块默认入口，可以多个
+    // alias: { // 别名 vue vue.runtime
+    //   '@bootstrap': 'bootstrap/dist/css/bootstrap.css'
+    // }
+    mainFields: ['style', 'main', 'index'], // 指定查找入口文件名字的顺序，默认index.js
+    extensions: ['.js', '.css', '.json', '.vue']
+  },
   devServer: { // 开发服务器的配置
     port: 8090,
     progress: true, // 查看打包进度
