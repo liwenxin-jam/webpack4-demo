@@ -70,6 +70,11 @@ module.exports = {
       // },
       // hash: true  // 防止浏览器缓存，增加哈希后缀，类似时间戳效果 bundle.js?sdfgsdfgsdf
     }),
+    new Webpack.DefinePlugin({
+      DEV: JSON.stringify('dev'), // 相当于是变量dev，需要转成字符串 "'dev'"
+      FLAG: 'true', // 不需要转字符串
+      EXPRESSION: '1+1'
+    })
     // new Webpack.BannerPlugin('made 2019 by jam'), // 打包出来的js css文件顶部增加banner描述 /*! made 2019 by jam */
     // new Webpack.ProvidePlugin({ // 在每个模块中都注入$
     //   $: 'jquery'

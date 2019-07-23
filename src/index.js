@@ -71,4 +71,14 @@
 // import 'bootstrap/dist/css/bootstrap.css'; // 指定只引入css文件
 // import '@bootstrap'; // 引入别名
 
-import './style' // 默认查找的是.js文件
+// import './style' // 默认查找的是.js文件
+
+let url = '';
+if (DEV === 'dev') {
+  url = 'http://localhost:3000'
+} else {
+  url = 'http://test.cn'
+}
+console.log(url)
+console.log(typeof FLAG)
+console.log(EXPRESSION)
