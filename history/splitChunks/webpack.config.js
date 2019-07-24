@@ -4,7 +4,10 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
   mode: 'production', // development production 
-  entry: './src/index.js',
+  entry: {
+    index: './src/index.js',
+    other: './src/other.js'
+  },
   output: {
     filename: '[name].js',
     path: path.resolve(__dirname, 'dist')
@@ -33,6 +36,24 @@ module.exports = {
       template: './public/index.html'
     })
   ],
+  optimization: { // 以前用commonChunkPlugins
+    splitChunks: { // 分割代码块
+      cacheGroups: { // 缓存组，从上到下
+        common: { // 公共模块
+          chunks: 'initial', // 初始化就抽离，可以异步抽离
+          minSize: 0, // 大于0字节抽离
+          minChunks: 2 // 被引用大于2次就抽离，包括2次，建议最少设2次以上
+        },
+        vendor: { // 第三方库
+          priority: 1, // 权重设为1，优先抽离，避免common打包在一起
+          test: /node_modules/, // 匹配文件夹把它抽离
+          chunks: 'initial',
+          minSize: 0,
+          minChunks: 2
+        }
+      }
+    }
+  },
   devServer: { // 开发服务器的配置
     port: 8090,
     progress: true, // 查看打包进度
