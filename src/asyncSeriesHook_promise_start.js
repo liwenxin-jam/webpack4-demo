@@ -1,14 +1,10 @@
-let { AsyncParallelHook } = require('tapable');
-// 异步的钩子（串行） 并行 需要等待所有并发的异步事件执行后再执行回调事件
-// 同时发送多次请求
-// 注册方法 分为3种 同步注册tap 异步注册 tagAsync(cb) tagPromise(注册是promise) 
-// 触发回调 分为3种 call callAsync promise 分别对应上边的注册方式
-// AsyncParallelBailHook 带保险的异步并发钩子
+let { AsyncSeriesHook } = require('tapable');
+// AsyncSeriesHook 异步串行的钩子
 class Lesson {
   constructor() {
     this.index = 0;
     this.hooks = {
-      arch: new AsyncParallelHook(['data'])
+      arch: new AsyncSeriesHook(['data'])
     }
   }
   tap() { // 注册监听函数

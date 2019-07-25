@@ -1,4 +1,4 @@
-class AsyncParallelHook { // 钩子是同步的
+class AsyncSeriesHook { // 钩子是同步的
   constructor(args) { // args => ['name']
     this.tasks = [];
   }
@@ -6,13 +6,14 @@ class AsyncParallelHook { // 钩子是同步的
     this.tasks.push(task);
   }
   promise(...args) { // 触发task
-    let tasks = this.tasks.map(task => task(...args));
-    return Promise.all(tasks);
+    let [first, ...others] = this.tasks;
+    return others.reduce((p, n) => { // redux 源码
+      return p.then(() => n(...args));
+    }, first(...args));
   }
 }
 
-let hook = new AsyncParallelHook(['name']);
-let total = 0;
+let hook = new AsyncSeriesHook(['name']);
 hook.tapPromise('react', function(name) {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
